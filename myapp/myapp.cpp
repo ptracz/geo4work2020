@@ -8,7 +8,7 @@ using namespace std;
 
 int main()
 {
-	cout << "my frist app" << endl;
+	cout << "my first app" << endl;
 	
 	SimleGDALCompilerChecker();
 
