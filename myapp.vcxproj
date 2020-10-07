@@ -181,6 +181,9 @@ xcopy /y $(SolutionDir)libs\expat\win32\bin\*.dll $(SolutionDir)libs\gdal\apps</
     <ClInclude Include="myapp\myapp.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="libs\expat\lib\expat_14.vcxproj">
+      <Project>{f1f66b65-bf5a-45b9-82f0-4b3247375ab9}</Project>
+    </ProjectReference>
     <ProjectReference Include="libs\gdal\gdal_14.vcxproj">
       <Project>{713d649e-2de5-41b5-9764-830a5394e08a}</Project>
     </ProjectReference>
