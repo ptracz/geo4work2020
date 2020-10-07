@@ -119,6 +119,12 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y $(SolutionDir)libs\gdal\*.dll $(SolutionDir)bin
+xcopy /y $(SolutionDir)libs\expat\win32\bin\*.dll $(SolutionDir)bin
+xcopy /y $(SolutionDir)libs\gdal\*.dll $(SolutionDir)libs\gdal\apps
+xcopy /y $(SolutionDir)libs\expat\win32\bin\*.dll $(SolutionDir)libs\gdal\apps</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -155,6 +161,12 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y $(SolutionDir)libs\gdal\*.dll $(SolutionDir)bin
+xcopy /y $(SolutionDir)libs\expat\win32\bin\*.dll $(SolutionDir)bin
+xcopy /y $(SolutionDir)libs\gdal\*.dll $(SolutionDir)libs\gdal\apps
+xcopy /y $(SolutionDir)libs\expat\win32\bin\*.dll $(SolutionDir)libs\gdal\apps</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="myapp\myapp.cpp" />
