@@ -37,22 +37,22 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <NMakeBuildCommandLine>nmake -f makefile.vc MSVC_VER=1900 WIN64=1 DEBUG=1 WITH_PDB=1</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>nmake -f makefile.vc MSVC_VER=1900 WIN64=1 DEBUG=1 WITH_PDB=1 EXPAT_DIR=$(SolutionDir)libs\expat</NMakeBuildCommandLine>
     <NMakeOutput>
     </NMakeOutput>
-    <NMakeCleanCommandLine>nmake -f makefile.vc MSVC_VER=1900 WIN64=1 DEBUG=1 WITH_PDB=1 clean</NMakeCleanCommandLine>
-    <NMakeReBuildCommandLine>nmake -f makefile.vc MSVC_VER=1900 WIN64=1 DEBUG=1 WITH_PDB=1 clean &amp;&amp; nmake -f makefile.vc MSVC_VER=1900 WIN64=1 DEBUG=1 WITH_PDB=1</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>nmake -f makefile.vc MSVC_VER=1900 WIN64=1 DEBUG=1 WITH_PDB=1 EXPAT_DIR=$(SolutionDir)libs\expat clean</NMakeCleanCommandLine>
+    <NMakeReBuildCommandLine>nmake -f makefile.vc MSVC_VER=1900 WIN64=1 DEBUG=1 WITH_PDB=1 EXPAT_DIR=$(SolutionDir)libs\expat clean &amp;&amp; nmake -f makefile.vc MSVC_VER=1900 WIN64=1 DEBUG=1 WITH_PDB=1 EXPAT_DIR=$(SolutionDir)libs\expat</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>x64;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(VC_SourcePath);</LibraryPath>
     <IntDir>temp\$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)temp\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <NMakeBuildCommandLine>nmake -f makefile.vc MSVC_VER=1900 WIN64=1 </NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>nmake -f makefile.vc MSVC_VER=1900 WIN64=1 EXPAT_DIR=$(SolutionDir)libs\expat</NMakeBuildCommandLine>
     <NMakeOutput>
     </NMakeOutput>
-    <NMakeCleanCommandLine>nmake -f makefile.vc MSVC_VER=1900 WIN64=1 clean</NMakeCleanCommandLine>
-    <NMakeReBuildCommandLine>nmake -f makefile.vc MSVC_VER=1900 WIN64=1 clean &amp;&amp; nmake -f makefile.vc MSVC_VER=1900</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>nmake -f makefile.vc MSVC_VER=1900 WIN64=1 EXPAT_DIR=$(SolutionDir)libs\expatclean</NMakeCleanCommandLine>
+    <NMakeReBuildCommandLine>nmake -f makefile.vc MSVC_VER=1900 WIN64=1 EXPAT_DIR=$(SolutionDir)libs\expat clean &amp;&amp; nmake -f makefile.vc MSVC_VER=1900 EXPAT_DIR=$(SolutionDir)libs\expat</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>x64;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(VC_SourcePath);</LibraryPath>
     <IntDir>temp\$(Platform)\$(Configuration)\</IntDir>
@@ -2398,6 +2398,11 @@
     <ClCompile Include="c:\temp\umcs\libs\gdal\port\cpl_xml_validate.cpp" />
     <ClCompile Include="c:\temp\umcs\libs\gdal\port\vsipreload.cpp" />
     <ClCompile Include="c:\temp\umcs\libs\gdal\port\xmlreformat.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\expat\lib\expat_14.vcxproj">
+      <Project>{f1f66b65-bf5a-45b9-82f0-4b3247375ab9}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

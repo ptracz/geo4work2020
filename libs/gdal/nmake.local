@@ -1,0 +1,7 @@
+# Uncomment out the following lines to enable LibKML support.
+# Uncomment for Expat support (required for KML, GPX and GeoRSS read support).
+#EXPAT_DIR = "C:\Program Files\Expat 2.0.1"
+EXPAT_INCLUDE = -I$(EXPAT_DIR)\lib
+EXPAT_LIB = $(EXPAT_DIR)\win32\bin\libexpat.lib
+
+
