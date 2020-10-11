@@ -126,7 +126,9 @@
       <Command>xcopy /y $(SolutionDir)libs\gdal\*.dll $(SolutionDir)bin
 xcopy /y $(SolutionDir)libs\expat\win32\bin\*.dll $(SolutionDir)bin
 xcopy /y $(SolutionDir)libs\gdal\*.dll $(SolutionDir)libs\gdal\apps
-xcopy /y $(SolutionDir)libs\expat\win32\bin\*.dll $(SolutionDir)libs\gdal\apps</Command>
+xcopy /y $(SolutionDir)libs\expat\win32\bin\*.dll $(SolutionDir)libs\gdal\apps
+xcopy /y $(SolutionDir)libs\proj4\src\*.dll $(SolutionDir)bin
+xcopy /y $(SolutionDir)libs\proj4\src\*.dll $(SolutionDir)libs\gdal\apps</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -171,7 +173,9 @@ xcopy /y $(SolutionDir)libs\expat\win32\bin\*.dll $(SolutionDir)libs\gdal\apps</
       <Command>xcopy /y $(SolutionDir)libs\gdal\*.dll $(SolutionDir)bin
 xcopy /y $(SolutionDir)libs\expat\win32\bin\*.dll $(SolutionDir)bin
 xcopy /y $(SolutionDir)libs\gdal\*.dll $(SolutionDir)libs\gdal\apps
-xcopy /y $(SolutionDir)libs\expat\win32\bin\*.dll $(SolutionDir)libs\gdal\apps</Command>
+xcopy /y $(SolutionDir)libs\expat\win32\bin\*.dll $(SolutionDir)libs\gdal\apps
+xcopy /y $(SolutionDir)libs\proj4\src\*.dll $(SolutionDir)bin
+xcopy /y $(SolutionDir)libs\proj4\src\*.dll $(SolutionDir)libs\gdal\apps</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
