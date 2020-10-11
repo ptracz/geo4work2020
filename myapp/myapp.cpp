@@ -10,7 +10,10 @@ int main()
 {
 	cout << "my first app" << endl;
 	
-	CreateMultiPointLayer();
+	CreatePolygonWithHoleLayer();
+	//CreatePolygonLayer();
+	//ReadPolygonLayer();
+	//CreateMultiPointLayer();
 	//CreateLineLayer();
 	//ReadLineLayer();
 	//CreatePointLayer();
@@ -21,6 +24,180 @@ int main()
 	system("pause");
 	return 0;
 }
+
+void CreatePolygonLayer()
+{
+	GDALAllRegister();
+	const char *pszDriverName = "ESRI Shapefile";
+	GDALDriver *poDriver;
+
+	poDriver = GetGDALDriverManager()->GetDriverByName(pszDriverName);
+	if (poDriver == NULL)
+	{
+		printf("%s driver not available.\n", pszDriverName);
+		return;
+	}
+
+	GDALDataset *poDS;
+	poDS = poDriver->Create("my_polygon.shp", 0, 0, 0, GDT_Unknown, NULL);
+	if (poDS == NULL)
+	{
+		printf("Creation of output file failed.\n");
+		return;
+	}
+
+	OGRLayer *poLayer;
+	poLayer = poDS->CreateLayer("my_polygon", NULL, wkbPolygon, NULL);
+	if (poLayer == NULL)
+	{
+		printf("Layer creation failed.\n");
+		return;
+	}
+
+
+	OGRFieldDefn oFieldString("Name", OFTString);
+	oFieldString.SetWidth(32);
+	if (poLayer->CreateField(&oFieldString) != OGRERR_NONE)
+	{
+		printf("Creating Name field failed.\n");
+		return;
+	}
+
+	OGRFieldDefn oFieldNumber("Area", OFTReal);
+	oFieldNumber.SetWidth(7);
+	oFieldNumber.SetPrecision(4);
+	if (poLayer->CreateField(&oFieldNumber) != OGRERR_NONE)
+	{
+		printf("Creating Length field failed.\n");
+		return;
+	}
+
+	OGRFeature *poFeature;
+	poFeature =
+		OGRFeature::CreateFeature(poLayer->GetLayerDefn());
+
+	poFeature->SetField("Name", "Lake");
+	poFeature->SetField("Area", 20.25);
+
+	OGRPolygon poligon;
+
+	OGRLinearRing ring;
+
+	OGRPoint pt1;
+	pt1.setX(10);
+	pt1.setY(10);
+
+	ring.addPoint(&pt1);
+	ring.addPoint(10, 0);
+	ring.addPoint(0, 0);
+	ring.addPoint(0, 10);
+	ring.addPoint(10, 10);
+
+	poligon.addRing(&ring);
+
+	poFeature->SetGeometry(&poligon);
+
+	if (poLayer->CreateFeature(poFeature) != OGRERR_NONE)
+	{
+		printf("Failed to create feature in shapefile.\n");
+		return;
+	}
+
+	OGRFeature::DestroyFeature(poFeature);
+
+
+	GDALClose(poDS);
+}
+
+void CreatePolygonWithHoleLayer()
+{
+	GDALAllRegister();
+	const char *pszDriverName = "ESRI Shapefile";
+	GDALDriver *poDriver;
+
+	poDriver = GetGDALDriverManager()->GetDriverByName(pszDriverName);
+	if (poDriver == NULL)
+	{
+		printf("%s driver not available.\n", pszDriverName);
+		return;
+	}
+
+	GDALDataset *poDS;
+	poDS = poDriver->Create("my_polygon_hole.shp", 0, 0, 0, GDT_Unknown, NULL);
+	if (poDS == NULL)
+	{
+		printf("Creation of output file failed.\n");
+		return;
+	}
+
+	OGRLayer *poLayer;
+	poLayer = poDS->CreateLayer("my_polygon_hole", NULL, wkbPolygon, NULL);
+	if (poLayer == NULL)
+	{
+		printf("Layer creation failed.\n");
+		return;
+	}
+
+
+	OGRFieldDefn oFieldString("Name", OFTString);
+	oFieldString.SetWidth(32);
+	if (poLayer->CreateField(&oFieldString) != OGRERR_NONE)
+	{
+		printf("Creating Name field failed.\n");
+		return;
+	}
+
+	OGRFieldDefn oFieldNumber("Area", OFTReal);
+	oFieldNumber.SetWidth(7);
+	oFieldNumber.SetPrecision(4);
+	if (poLayer->CreateField(&oFieldNumber) != OGRERR_NONE)
+	{
+		printf("Creating Length field failed.\n");
+		return;
+	}
+
+	OGRFeature *poFeature;
+	poFeature =
+		OGRFeature::CreateFeature(poLayer->GetLayerDefn());
+
+	poFeature->SetField("Name", "Lake");
+	poFeature->SetField("Area", 20.25);
+
+	OGRPolygon poligon;
+	OGRLinearRing ring;
+
+	ring.addPoint(20, 20);
+	ring.addPoint(20, -20);
+	ring.addPoint(-20, -20);
+	ring.addPoint(-20, 20);
+	ring.addPoint(20, 20);
+
+	poligon.addRing(&ring);
+
+	ring.empty();
+	ring.addPoint(10, 10);
+	ring.addPoint(10, 0);
+	ring.addPoint(0, 0);
+	ring.addPoint(0, 10);
+	ring.addPoint(10, 10);
+	ring.reversePoints();
+
+	poligon.addRing(&ring);
+
+	poFeature->SetGeometry(&poligon);
+
+	if (poLayer->CreateFeature(poFeature) != OGRERR_NONE)
+	{
+		printf("Failed to create feature in shapefile.\n");
+		return;
+	}
+
+	OGRFeature::DestroyFeature(poFeature);
+
+
+	GDALClose(poDS);
+}
+
 void CreateLineLayer()
 {
 	GDALAllRegister();
@@ -293,6 +470,96 @@ void ReadLineLayer()
 			{				
 				printf("x: %.3f y: %.3f\n", poLine->getX(pointNumber), poLine->getY(pointNumber));
 			}
+		}
+
+		OGRFeatureDefn *poFDefn = poLayer->GetLayerDefn();
+
+		for (int iField = 0; iField < poFDefn->GetFieldCount(); iField++)
+		{
+			OGRFieldDefn *poFieldDefn = poFDefn->GetFieldDefn(iField);
+
+			if (poFieldDefn->GetType() == OFTInteger)
+				printf("%d,", poFeature->GetFieldAsInteger(iField));
+
+			else if (poFieldDefn->GetType() == OFTReal)
+				printf("%.3f,", poFeature->GetFieldAsDouble(iField));
+
+			else if (poFieldDefn->GetType() == OFTString)
+				printf("%s,", poFeature->GetFieldAsString(iField));
+
+			else
+				printf("%s,", poFeature->GetFieldAsString(iField));
+		}
+		printf("\n\r\n\r");
+
+		OGRFeature::DestroyFeature(poFeature);
+	}
+
+
+	GDALClose(poDS);
+
+}
+
+void ReadPolygonLayer()
+{
+	OGRRegisterAll();
+
+	GDALDataset *poDS = NULL;
+
+	poDS = (GDALDataset*)GDALOpenEx("poligon.shp",
+		GDAL_OF_VECTOR,
+		NULL,
+		NULL,
+		NULL);
+
+	if (poDS == NULL)
+	{
+		//error
+		return;
+	}
+
+	OGRLayer  *poLayer = NULL;
+	poLayer = poDS->GetLayerByName("poligon");
+	if (poLayer == NULL)
+	{
+		// error
+		return;
+	}
+
+	OGRFeature *poFeature;
+
+	poLayer->ResetReading();
+
+	while ((poFeature = poLayer->GetNextFeature()) != NULL)
+	{
+
+		OGRGeometry *poGeometry = NULL;
+
+		poGeometry = poFeature->GetGeometryRef();
+
+		if (poGeometry != NULL
+			&& wkbFlatten(poGeometry->getGeometryType()) == wkbPolygon)
+		{
+			OGRPolygon* polygon = (OGRPolygon *)poGeometry;
+			OGRLinearRing* ring = polygon->getExteriorRing();
+			if (ring == NULL) return;
+			for (int pointNo = 0; pointNo < ring->getNumPoints(); pointNo++)
+			{
+				printf("exterior x: %.3f y: %.3f\n", ring->getX(pointNo), ring->getY(pointNo));
+			}
+			for (int ringInteriorNumber = 0; ringInteriorNumber < polygon->getNumInteriorRings(); ringInteriorNumber++)
+			{
+				OGRLinearRing* ringInterior = polygon->getInteriorRing(ringInteriorNumber);
+				if (ringInterior == NULL) continue;
+				for (int pointNo = 0; pointNo < ringInterior->getNumPoints(); pointNo++)
+				{
+					printf("interior x: %.3f y: %.3f\n", ringInterior->getX(pointNo), ringInterior->getY(pointNo));
+				}
+			}
+		}
+		else
+		{
+			printf("no polygon geometry\n");
 		}
 
 		OGRFeatureDefn *poFDefn = poLayer->GetLayerDefn();
